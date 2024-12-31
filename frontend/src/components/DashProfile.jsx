@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import { updateStart, updateFailure, updateSuccess, deleteUserFailure , deleteUserStart, deleteUserSuccess, signoutSuccess } from '../redux/user/userSlice'
 import { useDispatch } from 'react-redux'
 import { HiOutlineExclamationCircle } from 'react-icons/hi'
+import { Link } from 'react-router-dom'
 
 const DashProfile = () => {
     const {currentUser, error} = useSelector(state => state.user)
@@ -121,6 +122,17 @@ const handleSignout = async () => {
             <Button type='submit' gradientDuoTone='purpleToBlue' outline>
                 Update
             </Button>
+            {
+                currentUser.isAdmin && (
+                    <Link to={'/create-post'}>
+                     <Button 
+                    type='button'
+                    gradientDuoTone='purpleToPink' className='w-full'>
+                        Create a post
+                    </Button>
+                    </Link>
+                )
+            }
         </form>
         <div className='text-red-500 flex justify-between mt-5'>
         <span className='cursor-pointer' onClick={() => setShowModal(true)}>Delete Account</span>
