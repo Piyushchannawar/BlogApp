@@ -45,7 +45,7 @@ export const signin = async (req, res) => {
         if (!isMatch) {
             return next(errorHandler(400, 'Invalid credentials'));
         }
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+        const token = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, process.env.JWT_SECRET, {
             expiresIn: "1d",
         });
         const { password: pass, ...rest } = user._doc;
@@ -63,7 +63,7 @@ export const google = async (req, res, next) => {
     try {
         let user = await User.findOne({email});
         if(user){
-            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+            const token = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, process.env.JWT_SECRET, {
                 expiresIn: "1d",
             });
             const { password, ...rest } = user._doc;
@@ -81,7 +81,7 @@ export const google = async (req, res, next) => {
                 profilePicture: googlePhotoUrl
             });
             await newUser.save();
-            const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
+            const token = jwt.sign({ id: newUser._id , isAdmin: newUser.isAdmin}, process.env.JWT_SECRET, {
                 expiresIn: "1d",
             });
             const { password, ...rest } = newUser._doc;
